@@ -1,0 +1,46 @@
+serial : 115200 bauds 8 pas de parite pas de stop
+position et temps des integer sur 32 bits 
+
+#servo Pposition Ttemps +CR
+
+init : 
+
+#1 P1500 T500 //inclinaison tete
+#2 P1500 T500 //lever 1200 baisser 1800
+#3 P1500 T500
+#4 P1500 T500
+#0 P1500 T500 //droite 750 gauche 2250
+
+ #11 P1950 T500
+ #12 P1400 T500
+ #13 P1950 T500 //inclinaison 1800
+ #14 P2000 T500 //lever 750
+ #15 P1700 T500 //arriere 1900 avant 1500
+
+tlever : servo 2 
+avec  position > 1200
+#2 P(1500-(3* position)) Ttemps
+
+tbaisser : servo 2 
+avec  position < 1800
+#2 P(1500+(3* position)) Ttemps 
+
+tgauche : servo 0
+avec  position < 2250
+#0 P(1500+(7.5* position)) Ttemps
+
+tdroite : servo 0
+avec  position > 750
+#0 P(1500-(7.5* position)) Ttemps
+
+blever : servo 14
+avec  position > 750
+#14 P(2000-(12.5* position)) Ttemps
+
+barriere: servo 15
+avec  position < 1900
+#14 P(1700+(2* position)) Ttemps
+
+bavant: servo 15
+avec  position > 1500
+#15 P(1700-(2* position)) Ttemps

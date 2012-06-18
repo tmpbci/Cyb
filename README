@@ -1,0 +1,88 @@
+Cyb by Samneurohack with Mindwave headset
+for Caliban association with Cybrina Humanoid at Mondial du modelisme 2012 Paris, June 14-17  
+Program by samneurohack at gmail.com. 
+http://www.tmplab.org/wiki/index.php/Brain_Computer_Interface
+Short develop time : some part of GUI is useless 
+Needs Mac or Windows computer. Serial and voice command can run on Linux.
+A robot servo "choregraphy" player is included for testing : cybchore.r
+
+Cybrina has Lynxmotion SSC-32 servo-serial interface and Prolink USB-Serial interface (download drivers from Internet)
+
+Two players, one per servo, one computer per player. 
+
+Two versions : cyb1.r (servo +- voice wip) / cyb2 (servo +- voice wip)
+
+
+TCP 13854 : thinkgear Connector (2+ with bubbles on menubar for Win/Mac) with thinkgear bootstart. 
+TCP 13859 : TCP -> Serial port (VSPE freeware on server mode for Win / cybrinet.rb for OS X or Linux / tcpserial.py for Linux ) = "Server computer" is supposed to be IP 192.168.1.7 NB : Serial port aren't autodetected you need to modify the sources to the correct serial port (search in /dev/)
+
+If two computers and OS X/Linux server : use main.r to accept 4 connections TCP connections : 2 redirected to TCP 13859 and 2 for voice. mainvoice.r open two tcp connection for speech .wav file
+
+setup robot movement in cyb program : 
+		 
+motorleft: "#13"
+motoright: "#8"
+leftstart: 1950
+leftend: 1350
+leftstep: -151		; (leftend - leftstart) / 4
+rightstart: 700
+rightend: 1100
+rightstep: 34		; (rightend - rightstart) / 4
+
+*use negative step if end position < start position*
+
+See choreinit.txt for serial instruction examples 
+#motor Pnewposition Tlengthofmove
+
+Voice solutions : 
+
+- Text to speech : OS X : built in say command line with chosen voice / Win : espeak but poor results. Set up with better mbrola voices too complex. main.r also translate incoming text to voice
+- Recorded voices : can be from ivona website mainvoice.r use commands to launch the different .wav 
+
+Difficulty : several mindcounts / mindlevels. Program has 12 possible mindlevels. For quick operation : each completed mindlevel adds 3 mindlevels so it's a 4 levels game as is, but can be modified search line in cyb rebol program mindlevel: mindlevel + 3
+
+
+Required mental task : fixed attention : look to a movie, stop thinking,…
+
+Detection : difference between Attention and Meditation values within 15 + no human move (check on low gamma) 
+
+
+RUN Procedure
+
+Win : doubleclick on cyb1.r (if server : launch VSPE first +- mainvoice server)
+OS X : rebol cyb1.r (if server : launch : ruby cybrinet.rb first +- main or mainvoice server)
+
+if main.r or mainvoice.r is used (2 players, server is not Windows or voice) follow instructions in a specific order asked by main program family.
+
+RobON to connect to tcp -> serial server
+Choose the player : LEFT or RIGHT (default is left)
+RobINIT if robot need to reach some server position before.
+Voiceon if voice. Voice is very alpha and was poorly tested. Mail me if needed.
+Start
+
+To replay try gameRST button or quit/launch cyb1.r
+
+
+TESTING : 
+
+Robot : to test a cybrina choreography (choregraphie.txt) : start VSPE (win) or cybrinet.r (OS X) then Launch cybchore.r. Linux needs only cybrina.py but has no GUI. cybrinetest.rb can also be used to test 13859 tcp server 
+
+
+INSTALL :
+
+Requirements : Rebol, ThinkGearconnector, VSPE, ruby for OS X. Python serial management is not working with Prolink on OS X but can be used for *nix.
+
+USB needed : Mindwave dongle, USB to robot
+
+Install Rebol view 2.7.x, *note that rebol 3 is not supported* :
+http://www.rebol.com/download-view.html
+OS X: you may want to copy rebol in your PATH i.e to /usr/bin/
+
+Download and Install a serial access for python if needed like pyserial :
+In terminal type :
+sudo easy_install pyserial
+
+Install Thinkgear Connector program form Mindset developper tools :
+http://store.neurosky.com/collections/development
+
+For Ruby (used on 1.8.7) ruby-serialport is needed, see first lines of cybrinet.rb for install instructions.
